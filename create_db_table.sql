@@ -4,8 +4,7 @@ CREATE DATABASE music_collection;
 -- Таблица для исполнителей
 CREATE TABLE if not exists singers (
     singer_id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL UNIQUE,
-	styles_id INT
+    name VARCHAR(255) NOT NULL UNIQUE
 );
 
 -- Таблица для жанров
