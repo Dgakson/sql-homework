@@ -1,10 +1,10 @@
 -- Создание базы данных
-CREATE DATABASE music_service;
+CREATE DATABASE music_collection;
 
 -- Таблица для исполнителей
-CREATE TABLE if not exists artists (
-    artist_id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
+CREATE TABLE if not exists singers (
+    singer_id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL UNIQUE,
 	styles_id INT
 );
 
@@ -34,24 +34,24 @@ CREATE TABLE IF NOT EXISTS songs (
 CREATE TABLE IF NOT EXISTS collection (
     collection_id SERIAL PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
-    release_date DATE
+    year INT
 );
 
 -- Связующая таблица для отношения многие-ко-многим между исполнителями и жанрами
-CREATE TABLE IF NOT EXISTS artist_styles (
-    artist_id INT,
+CREATE TABLE IF NOT EXISTS singer_styles (
+    singer_id INT,
     style_id INT,
-    PRIMARY KEY (artist_id, style_id),
-    FOREIGN KEY (artist_id) REFERENCES artists(artist_id) ON DELETE CASCADE,
+    PRIMARY KEY (singer_id, style_id),
+    FOREIGN KEY (singer_id) REFERENCES singers(singer_id) ON DELETE CASCADE,
     FOREIGN KEY (style_id) REFERENCES styles(style_id) ON DELETE CASCADE
 );
 
 -- Связующая таблица для отношения многие-ко-многим между исполнителями и альбомами
-CREATE TABLE IF NOT EXISTS artist_albums (
-    artist_id INT,
+CREATE TABLE IF NOT EXISTS singer_albums (
+    singer_id INT,
     album_id INT,
-    PRIMARY KEY (artist_id, album_id),
-    FOREIGN KEY (artist_id) REFERENCES artists(artist_id) ON DELETE CASCADE,
+    PRIMARY KEY (singer_id, album_id),
+    FOREIGN KEY (singer_id) REFERENCES singers(singer_id) ON DELETE CASCADE,
     FOREIGN KEY (album_id) REFERENCES albums(album_id) ON DELETE CASCADE
 );
 
