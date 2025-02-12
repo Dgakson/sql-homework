@@ -25,7 +25,6 @@ def create_db(conn):
             FOREIGN KEY (client_id) REFERENCES clients(client_id) ON DELETE CASCADE
         );
         """)
-        conn.commit()  # фиксируем в БД        
 
 def add_client(conn, first_name, last_name, email, phones=None):
     with conn.cursor() as cur:
@@ -41,14 +40,10 @@ def add_client(conn, first_name, last_name, email, phones=None):
                 cur.execute("""INSERT INTO phones (client_id, phone_number) VALUES (%s, %s);""",
                             (client_id, phone))
 
-        conn.commit()  # фиксируем изменения в БД
-
 def add_phone(conn, client_id, phone):
     with conn.cursor() as cur:
         # Добавляем номер клиенту
         cur.execute("""INSERT INTO phones(client_id, phone_number) VALUES(%s, %s);""",(client_id, phone))
-
-        conn.commit()  # фиксируем изменения в БД
 
 def change_client(conn, client_id, first_name=None, last_name=None, email=None, phones=None):
     with conn.cursor() as cur:
@@ -70,14 +65,10 @@ def change_client(conn, client_id, first_name=None, last_name=None, email=None, 
             for phone in phones:
                 cur.execute("""INSERT INTO phones (client_id, phone_number) VALUES (%s, %s);""", (client_id, phone))
 
-        conn.commit()  # фиксируем изменения в БД
-
 def delete_phone(conn, client_id, phone):
     with conn.cursor() as cur:
         cur.execute("""DELETE FROM phones WHERE client_id = %s AND phone_number = %s;""", (client_id, phone))
         
-        conn.commit()  # фиксируем изменения в БД
-
 def delete_client(conn, client_id):
     with conn.cursor() as cur:
         # Удаляем все телефоны клиента
@@ -85,8 +76,6 @@ def delete_client(conn, client_id):
         # Удаляем клиента
         cur.execute("""DELETE FROM clients WHERE client_id = %s;""", (client_id,))
         
-        conn.commit()  # фиксируем изменения в БД
-
 def find_client(conn, first_name=None, last_name=None, email=None, phone=None):
     query = """
         SELECT clients.client_id, clients.first_name, clients.last_name, clients.email, phones.phone_number
@@ -115,18 +104,18 @@ def find_client(conn, first_name=None, last_name=None, email=None, phone=None):
 
     return result  # Возвращает список найденных клиентов
 
+if __name__ == '__main__': 
+    with psycopg2.connect(database="clients_db", user="postgres", password="postgre") as conn:    
+        create_db(conn)
 
-with psycopg2.connect(database="clients_db", user="postgres", password="postgre") as conn:    
-    create_db(conn)
+        add_client(conn, 'Иван', 'Иванов', 'ivan@example.com', ['12345', '56789'])
+        add_client(conn, 'Петр', 'Петров', 'petr@example.com')
+        add_client(conn, 'Дмитрий', 'Дмитров', 'dmitrov@example.com')
 
-    add_client(conn, 'Иван', 'Иванов', 'ivan@example.com', ['12345', '56789'])
-    add_client(conn, 'Петр', 'Петров', 'petr@example.com')
-    add_client(conn, 'Дмитрий', 'Дмитров', 'dmitrov@example.com')
+        add_phone(conn, 3, '11111111')
+        change_client(conn, 3, 'DIMA', 'Dimov', 'domestos@example.com', ['222222', '3333333'])
+        delete_phone(conn, 3, '3333333')
+        delete_client(conn, 3)
+        pprint(find_client(conn, first_name='Иван'))
 
-    add_phone(conn, 3, '11111111')
-    change_client(conn, 3, 'DIMA', 'Dimov', 'domestos@example.com', ['222222', '3333333'])
-    delete_phone(conn, 3, '3333333')
-    delete_client(conn, 3)
-    pprint(find_client(conn, first_name='Иван'))
-
-conn.close()
+    conn.close()
