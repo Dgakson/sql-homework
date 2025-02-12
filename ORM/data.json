@@ -1,0 +1,124 @@
+{
+    "publisher_data": [
+        {
+            "id": 1,
+            "name": "Пушкин"
+        },
+        {
+            "id": 2,
+            "name": "Лермонтов"
+        },
+        {
+            "id": 3,
+            "name": "Толстой"
+        }
+    ],
+    "book_data": [
+        {
+            "id": 1,
+            "title": "Капитанская дочь",
+            "publisher_id": 1
+        },
+        {
+            "id": 2,
+            "title": "Руслан и Людмила",
+            "publisher_id": 1
+        },
+        {
+            "id": 3,
+            "title": "Война и Мир",
+            "publisher_id": 3
+        },
+        {
+            "id": 4,
+            "title": "Герой нашего времени",
+            "publisher_id": 2
+        }
+    ],
+    "shop_data": [
+        {
+            "id": 1,
+            "name": "Буквоед"
+        },
+        {
+            "id": 2,
+            "name": "Читальник"
+        }
+    ],
+    "stock_data": [
+        {
+            "id": 1,
+            "book_id": 1,
+            "shop_id": 1,
+            "count": 2
+        },
+        {
+            "id": 2,
+            "book_id": 1,
+            "shop_id": 2,
+            "count": 3
+        },
+        {
+            "id": 3,
+            "book_id": 2,
+            "shop_id": 1,
+            "count": 1
+        },
+        {
+            "id": 4,
+            "book_id": 3,
+            "shop_id": 1,
+            "count": 1
+        },
+        {
+            "id": 5,
+            "book_id": 4,
+            "shop_id": 2,
+            "count": 2
+        }
+    ],
+    "sale_data": [
+        {
+            "id": 1,
+            "price": 300,
+            "date_sale": "12.02.2025",
+            "id_stock": 1,
+            "count": 1
+        },
+        {
+            "id": 2,
+            "price": 350,
+            "date_sale": "11.02.2025",
+            "id_stock": 2,
+            "count": 3
+        },
+        {
+            "id": 3,
+            "price": 200,
+            "date_sale": "25.11.2024",
+            "id_stock": 2,
+            "count": 1
+        },
+        {
+            "id": 4,
+            "price": 400,
+            "date_sale": "08.01.2025",
+            "id_stock": 3,
+            "count": 1
+        },
+        {
+            "id": 5,
+            "price": 450,
+            "date_sale": "22.01.2025",
+            "id_stock": 4,
+            "count": 1
+        },
+        {
+            "id": 6,
+            "price": 550,
+            "date_sale": "31.12.2024",
+            "id_stock": 5,
+            "count": 2
+        }
+    ]
+}
