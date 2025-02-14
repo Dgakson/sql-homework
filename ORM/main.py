@@ -25,25 +25,48 @@ def add_objects(model_class, data_list):
 
 def get_book_sales_by_author(author_name):
     """Получает информацию о продажах книг по фамилии автора."""
-    author_name = author_name.capitalize()
+    if type(author_name) is str: 
+        author_name = author_name.capitalize()
 
-    result = (
-        session.query(m.Book.title, m.Shop.name, m.Sale.price, m.Sale.date_sale)
-        .join(m.Publisher, m.Publisher.id == m.Book.publisher_id)
-        .join(m.Stock, m.Stock.book_id == m.Book.id)
-        .join(m.Sale, m.Stock.id == m.Sale.id_stock)
-        .join(m.Shop, m.Stock.shop_id == m.Shop.id)
-        .filter(m.Publisher.name == author_name)
-        .all()
-    )
-
+        result = (
+            session.query(m.Book.title, m.Shop.name, m.Sale.price, m.Sale.date_sale)
+            .join(m.Publisher, m.Publisher.id == m.Book.publisher_id)
+            .join(m.Stock, m.Stock.book_id == m.Book.id)
+            .join(m.Sale, m.Stock.id == m.Sale.id_stock)
+            .join(m.Shop, m.Stock.shop_id == m.Shop.id)
+            .filter(m.Publisher.name == author_name)
+            .all()
+        )
+    if type(author_name) is int:
+        result = (
+            session.query(m.Book.title, m.Shop.name, m.Sale.price, m.Sale.date_sale)
+            .join(m.Publisher, m.Publisher.id == m.Book.publisher_id)
+            .join(m.Stock, m.Stock.book_id == m.Book.id)
+            .join(m.Sale, m.Stock.id == m.Sale.id_stock)
+            .join(m.Shop, m.Stock.shop_id == m.Shop.id)
+            .filter(m.Publisher.id == author_name)
+            .all()
+        )
+    
     print(f'\n\033[1mназвание книги | название магазина, в котором была куплена эта книга | стоимость покупки | дата покупки\033[0m')
     for r in result:
         print(f'{r[0]:<20} | {r[1]:<30} | {r[2]:<10} | {r[3]}')
 
+def get_input():
+    author_name = input('Введите фамилию автора или его id: ')
+    # Попробуем преобразовать ввод в число
+    try:
+        # Проверяем, является ли ввод целым числом
+        author_name = int(author_name)
+        return author_name
+    except ValueError:
+        return author_name
+
+
 if __name__ == '__main__': 
 
     # создание движка и подключение к базе данных
+    # Можно 
     DSN = 'postgresql://postgres:postgre@localhost:5432/book_publishers_db'
     engine = sq.create_engine(DSN)
 
@@ -67,7 +90,7 @@ if __name__ == '__main__':
     session.commit()  
 
     # Поиск проданых книг
-    author_name = input('Введите фамилию автора: ')
+    author_name = get_input()
     get_book_sales_by_author(author_name)
 
     session.close()
